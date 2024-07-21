@@ -4,6 +4,6 @@
     {
         public int CouponId { get; set; }
         public required string CouponCode { get; set; }
-        public double MinAmount { get; set; }
+        public double MinAmount { get; set; }         
     }
 }
