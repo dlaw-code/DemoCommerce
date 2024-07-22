@@ -11,7 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{99EA4C73-93E6-472B-9ACD-07A85CA021C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoCommerce.API", "DemoCommerce.API\DemoCommerce.API.csproj", "{2B9E40F8-0DF1-40A3-B334-6EE0D001A688}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoCommerce.API", "DemoCommerce.API\DemoCommerce.API.csproj", "{2B9E40F8-0DF1-40A3-B334-6EE0D001A688}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coupon.Web", "Coupon.Web\Coupon.Web.csproj", "{5D8F7DB3-2288-49BA-A4EF-6D13FF307F25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +25,17 @@ Global
 		{2B9E40F8-0DF1-40A3-B334-6EE0D001A688}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B9E40F8-0DF1-40A3-B334-6EE0D001A688}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B9E40F8-0DF1-40A3-B334-6EE0D001A688}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D8F7DB3-2288-49BA-A4EF-6D13FF307F25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D8F7DB3-2288-49BA-A4EF-6D13FF307F25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D8F7DB3-2288-49BA-A4EF-6D13FF307F25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D8F7DB3-2288-49BA-A4EF-6D13FF307F25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2B9E40F8-0DF1-40A3-B334-6EE0D001A688} = {99EA4C73-93E6-472B-9ACD-07A85CA021C0}
+		{5D8F7DB3-2288-49BA-A4EF-6D13FF307F25} = {71F51463-9306-4750-B955-BFFC5AB933E3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {56DD3569-ECBF-42E4-A207-4582BA0DE11D}

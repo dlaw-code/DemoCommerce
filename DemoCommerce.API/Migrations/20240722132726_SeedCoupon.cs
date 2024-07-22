@@ -2,10 +2,12 @@
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace DemoCommerce.API.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigrate : Migration
+    public partial class SeedCoupon : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,16 +16,24 @@ namespace DemoCommerce.API.Migrations
                 name: "Coupons",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    CouponId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CouponId = table.Column<int>(type: "int", nullable: false),
                     DiscountAmount = table.Column<double>(type: "float", nullable: false),
                     CouponCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MinAmount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Coupons", x => x.Id);
+                    table.PrimaryKey("PK_Coupons", x => x.CouponId);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Coupons",
+                columns: new[] { "CouponId", "CouponCode", "DiscountAmount", "MinAmount" },
+                values: new object[,]
+                {
+                    { 1, "10FF", 10.0, 20 },
+                    { 2, "20FF", 30.0, 40 }
                 });
         }
 

@@ -1,6 +1,6 @@
 ﻿using DemoCommerce.API.Data;
 using DemoCommerce.API.Entity;
-using DemoCommerce.API.Interface;
+using DemoCommerce.API.Models.Dto;
 using DemoCommerce.API.Models.ResponseDto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,48 +11,59 @@ namespace DemoCommerce.API.Controllers
     [ApiController]
     public class CouponController : ControllerBase
     {
-        private readonly ICouponService _couponService;
+        private readonly AppDbContext _db;
+        private ResponseDto _response;
 
-        public CouponController(ICouponService couponService)
+        public CouponController(AppDbContext db)
         {
-            _couponService = couponService;
+            _db = db;
+            _response = new ResponseDto();
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCoupons()
+        public ResponseDto Get()
         {
-            var coupons = await _couponService.GetAllCoupons();
-            return Ok(coupons);
+            try
+            {
+                IEnumerable<Coupon> objList = _db.Coupons.ToList();
+                _response.Result = objList;
+                
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+            }
+
+            return _response;
+            
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetCouponById(int id)
+
+
+        [HttpGet("{id:int}")]
+        //[Route("{id: int}")]
+        public ResponseDto GetById(int id)
         {
-            var coupon = await _couponService.GetCouponById(id);
-            if (coupon == null) return NotFound();
-            return Ok(coupon);
+            try
+            {
+                Coupon obj = _db.Coupons.First(u => u.CouponId == id);
+                _response.Result = obj;
+            }
+            catch(Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+            }
+
+            return _response;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateCoupon([FromBody] CouponDto couponDto)
-        {
-            var createdCoupon = await _couponService.CreateCoupon(couponDto);
-            return CreatedAtAction(nameof(GetCouponById), new { id = createdCoupon.CouponId }, createdCoupon);
-        }
+     
+        
+       
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCoupon(int id, [FromBody] CouponDto couponDto)
-        {
-            var updatedCoupon = await _couponService.UpdateCoupon(id, couponDto);
-            if (updatedCoupon == null) return NotFound();
-            return Ok(updatedCoupon);
-        }
+        
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCoupon(int id)
-        {
-            await _couponService.DeleteCoupon(id);
-            return NoContent();
-        }
     }
 }

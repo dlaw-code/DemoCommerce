@@ -23,18 +23,15 @@ namespace DemoCommerce.API.Migrations
 
             modelBuilder.Entity("DemoCommerce.API.Entity.Coupon", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CouponId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CouponId"));
 
                     b.Property<string>("CouponCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CouponId")
-                        .HasColumnType("int");
 
                     b.Property<double>("DiscountAmount")
                         .HasColumnType("float");
@@ -42,9 +39,25 @@ namespace DemoCommerce.API.Migrations
                     b.Property<int>("MinAmount")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("CouponId");
 
                     b.ToTable("Coupons");
+
+                    b.HasData(
+                        new
+                        {
+                            CouponId = 1,
+                            CouponCode = "10FF",
+                            DiscountAmount = 10.0,
+                            MinAmount = 20
+                        },
+                        new
+                        {
+                            CouponId = 2,
+                            CouponCode = "20FF",
+                            DiscountAmount = 30.0,
+                            MinAmount = 40
+                        });
                 });
 #pragma warning restore 612, 618
         }
