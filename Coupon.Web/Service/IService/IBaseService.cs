@@ -1,5 +1,6 @@
-﻿using Coupon.Web.Models;
-using DemoCommerce.Web.Models;
+﻿using Commerce.Web.Models;
+using Coupon.Web.Models;
+
 
 
 
@@ -9,6 +10,6 @@ namespace Coupon.Web.Service.IService
 {
     public interface IBaseService
     {
-        //Task<ResponseDto<T>?> SendAsync<T>(RequestDto requestDto);
+        Task<ResponseDto?> SendAsync(RequestDto requestDto);
     }
 }

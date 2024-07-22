@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{99
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoCommerce.API", "DemoCommerce.API\DemoCommerce.API.csproj", "{2B9E40F8-0DF1-40A3-B334-6EE0D001A688}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coupon.Web", "Coupon.Web\Coupon.Web.csproj", "{5D8F7DB3-2288-49BA-A4EF-6D13FF307F25}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commerce.Web", "Coupon.Web\Commerce.Web.csproj", "{5D8F7DB3-2288-49BA-A4EF-6D13FF307F25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
