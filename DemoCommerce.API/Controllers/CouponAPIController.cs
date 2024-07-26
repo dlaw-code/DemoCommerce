@@ -120,7 +120,8 @@ namespace DemoCommerce.API.Controllers
             return _response;
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:int}")]
+
         public ResponseDto Delete(int id)
         {
             try

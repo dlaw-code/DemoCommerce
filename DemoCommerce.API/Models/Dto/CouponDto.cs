@@ -1,12 +1,17 @@
-﻿namespace DemoCommerce.API.Models.ResponseDto
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DemoCommerce.API.Models.ResponseDto
 {
     public class CouponDto
     {
-       
+
         public int CouponId { get; set; }
+
+        [Required]
+        public string CouponCode { get; set; }
+
         public double DiscountAmount { get; set; }
-        public required string CouponCode { get; set; }
-        public double MinAmount { get; set; }   
+        public double MinAmount { get; set; }
     }
 }
 
