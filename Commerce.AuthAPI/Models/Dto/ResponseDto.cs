@@ -1,4 +1,4 @@
-﻿namespace DemoCommerce.API.Models.Dto
+﻿namespace Commerce.AuthAPI.Models.Dto
 {
     public class ResponseDto<T>
     {
@@ -7,5 +7,4 @@
         public string Message { get; set; } = "";
         public List<string> Errors { get; set; } = new List<string>();
     }
-
 }

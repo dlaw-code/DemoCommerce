@@ -10,6 +10,6 @@ namespace Coupon.Web.Service.IService
 {
     public interface IBaseService
     {
-        Task<ResponseDto?> SendAsync(RequestDto requestDto);
+        Task<ResponseDto<T>> SendAsync<T>(RequestDto requestDto);
     }
 }

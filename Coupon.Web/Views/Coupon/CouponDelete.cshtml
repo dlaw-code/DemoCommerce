@@ -1,45 +1,39 @@
-﻿@using Commerce.Web.Models
-@model CouponDto
+﻿@model Commerce.Web.Models.CouponDto
 
-<form asp-action="CouponDelete">
-    <br />
-    <div class="container border p-3">
-        <h1 class="text-white text-center">Delete Coupon</h1>
-        <input asp-for="CouponId" hidden />
-        <hr />
+@{
+    ViewData["Title"] = "Delete Coupon";
+}
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-danger bg-gradient ml-0 py-3">
         <div class="row">
-            <div class="col-2">
-                <label class="control-label pt-2" style="font-size:20px;">Coupon Code</label>
-            </div>
-            <div class="col-10 pb-3">
-                <input asp-for="CouponCode" disabled class="form-control" />
-               
-            </div>
-            <div class="col-2">
-                <label class="control-label pt-2" style="font-size:20px;">Discount Amount</label>
-            </div>
-            <div class="col-10 pb-3">
-                <input asp-for="DiscountAmount" disabled class="form-control" />
-                
-            </div>
-            <div class="col-2">
-                <label class="control-label pt-2" style="font-size:20px;">Minimum Amount</label>
-            </div>
-            <div class="col-10 pb-3">
-                <input asp-for="MinAmount" disabled class="form-control" />
-               
-            </div>
-
-            <div class="col-5 offset-2">
-                <a asp-action="CouponIndex" class="btn-primary btn form-control">Back to List</a>
-
-            </div>
-            <div class="col-5">
-                <input type="submit" value="Delete" class="btn btn-success form-control" />
+            <div class="col-12 text-center">
+                <h1 class="text-white">Delete Coupon</h1>
             </div>
         </div>
     </div>
-</form>
 
+    <div class="card-body p-4">
+        <form asp-action="CouponDelete" method="post">
+            <input type="hidden" asp-for="CouponId" />
 
+            <div class="mb-3">
+                <label class="form-label">Coupon Code</label>
+                <input type="text" class="form-control" asp-for="CouponCode" readonly />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Discount Amount</label>
+                <input type="text" class="form-control" asp-for="DiscountAmount" readonly />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Minimum Amount</label>
+                <input type="text" class="form-control" asp-for="MinAmount" readonly />
+            </div>
 
+            <div class="text-center">
+                <button type="submit" class="btn btn-danger">Delete</button>
+                <a asp-action="CouponIndex" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

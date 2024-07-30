@@ -2,9 +2,13 @@
 using DemoCommerce.API.Data;
 using DemoCommerce.API.Entity;
 using DemoCommerce.API.Models.Dto;
-using DemoCommerce.API.Models.ResponseDto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using System;
+using DemoCommerce.API.Models.ResponseDto;
+using Microsoft.EntityFrameworkCore;
 
 namespace DemoCommerce.API.Controllers
 {
@@ -13,135 +17,179 @@ namespace DemoCommerce.API.Controllers
     public class CouponAPIController : ControllerBase
     {
         private readonly AppDbContext _db;
-        private ResponseDto _response;
-        private IMapper _mapper;
 
         public CouponAPIController(AppDbContext db, IMapper mapper)
         {
             _db = db;
-            _mapper = mapper;
-            _response = new ResponseDto();
         }
 
         [HttpGet]
-        public ResponseDto Get()
+        public ActionResult<ResponseDto<IEnumerable<CouponDto>>> Get()
         {
-            try
-            {
-                IEnumerable<Coupon> objList = _db.Coupons.ToList();
-                _response.Result = objList;
-                
-            }
-            catch (Exception ex)
-            {
-                _response.IsSuccess = false;
-                _response.Message = ex.Message;
-            }
+            var coupons = _db.Coupons
+                .Select(c => new CouponDto
+                {
+                    CouponId = c.CouponId,
+                    CouponCode = c.CouponCode,
+                    DiscountAmount = c.DiscountAmount,
+                    MinAmount = c.MinAmount
+                })
+                .ToList();
 
-            return _response;
-            
+            return Ok(new ResponseDto<IEnumerable<CouponDto>>
+            {
+                Result = coupons,
+                IsSuccess = true,
+                Message = "Coupons retrieved successfully"
+            });
         }
 
-
-
         [HttpGet("{id:int}")]
-        //[Route("{id: int}")]
-        public ResponseDto GetById(int id)
+        public ActionResult<ResponseDto<CouponDto>> GetById(int id)
         {
-            try
+            var coupon = _db.Coupons
+                .Where(c => c.CouponId == id)
+                .Select(c => new CouponDto
+                {
+                    CouponId = c.CouponId,
+                    CouponCode = c.CouponCode,
+                    DiscountAmount = c.DiscountAmount,
+                    MinAmount = c.MinAmount
+                })
+                .FirstOrDefault();
+
+            if (coupon == null)
             {
-                Coupon obj = _db.Coupons.First(u => u.CouponId == id);
-                _response.Result = obj;
-            }
-            catch(Exception ex)
-            {
-                _response.IsSuccess = false;
-                _response.Message = ex.Message;
+                return NotFound(new ResponseDto<CouponDto>
+                {
+                    IsSuccess = false,
+                    Message = "Coupon not found"
+                });
             }
 
-            return _response;
+            return Ok(new ResponseDto<CouponDto>
+            {
+                Result = coupon,
+                IsSuccess = true,
+                Message = "Coupon retrieved successfully"
+            });
         }
 
         [HttpPost]
-        public ResponseDto Post([FromBody] CouponDto couponDto)
+        public ActionResult<ResponseDto<CouponDto>> Post([FromBody] CouponDto couponDto)
         {
-            try
+            var coupon = new Coupon
             {
-                Coupon obj = _mapper.Map<Coupon>(couponDto);
-                _db.Coupons.Add(obj);
-                _db.SaveChanges();
+                CouponCode = couponDto.CouponCode,
+                DiscountAmount = couponDto.DiscountAmount,
+                MinAmount = couponDto.MinAmount
+            };
 
-                _response.Result = _mapper.Map<CouponDto>(obj);
-            }
-            catch(Exception ex)
+            _db.Coupons.Add(coupon);
+            _db.SaveChanges();
+
+            couponDto.CouponId = coupon.CouponId;
+
+            return CreatedAtAction(nameof(GetById), new { id = coupon.CouponId }, new ResponseDto<CouponDto>
             {
-                _response.IsSuccess = false;
-                _response.Message = ex.Message;
-            }
-
-            return _response;
+                Result = couponDto,
+                IsSuccess = true,
+                Message = "Coupon created successfully"
+            });
         }
 
-        [HttpGet]
-        [Route("GetByCode/{code}")]
-
-        public ResponseDto GetByCode(string code)
+        [HttpGet("GetByCode/{code}")]
+        public async Task<ActionResult<ResponseDto<CouponDto>>> GetByCode(string code)
         {
-            try
+            var coupon = await _db.Coupons
+                .Where(u => u.CouponCode.ToLower() == code.ToLower())
+                .Select(c => new CouponDto
+                {
+                    CouponId = c.CouponId,
+                    CouponCode = c.CouponCode,
+                    DiscountAmount = c.DiscountAmount,
+                    MinAmount = c.MinAmount
+                })
+                .FirstOrDefaultAsync();
+
+            if (coupon == null)
             {
-                Coupon obj = _db.Coupons.First(u => u.CouponCode.ToLower() == code.ToLower());
-                _response.Result = _mapper.Map<CouponDto>(obj);
+                return NotFound(new ResponseDto<CouponDto>
+                {
+                    IsSuccess = false,
+                    Message = "Coupon not found"
+                });
             }
-            catch(Exception ex)
+
+            return Ok(new ResponseDto<CouponDto>
             {
-                _response.IsSuccess = false;
-                _response.Message = ex.Message;
-            }
-            return _response;
+                Result = coupon,
+                IsSuccess = true,
+                Message = "Coupon retrieved successfully"
+            });
         }
 
         [HttpPut]
-        public ResponseDto Put([FromBody] CouponDto couponDto)
+        public ActionResult<ResponseDto<CouponDto>> Put([FromBody] CouponDto couponDto)
         {
-            try
-            {
-                Coupon obj = _mapper.Map<Coupon>(couponDto);
-                _db.Coupons.Update(obj);
-                _db.SaveChanges();
+            var existingCoupon = _db.Coupons.FirstOrDefault(u => u.CouponId == couponDto.CouponId);
 
-                _response.Result = _mapper.Map<CouponDto>(obj);
-            }
-            catch (Exception ex)
+            if (existingCoupon == null)
             {
-                _response.IsSuccess = false;
-                _response.Message = ex.Message;
+                return NotFound(new ResponseDto<CouponDto>
+                {
+                    IsSuccess = false,
+                    Message = "Coupon not found"
+                });
             }
 
-            return _response;
+            existingCoupon.CouponCode = couponDto.CouponCode;
+            existingCoupon.DiscountAmount = couponDto.DiscountAmount;
+            existingCoupon.MinAmount = couponDto.MinAmount;
+
+            _db.Coupons.Update(existingCoupon);
+            _db.SaveChanges();
+
+            var updatedCouponDto = new CouponDto
+            {
+                CouponId = existingCoupon.CouponId,
+                CouponCode = existingCoupon.CouponCode,
+                DiscountAmount = existingCoupon.DiscountAmount,
+                MinAmount = existingCoupon.MinAmount
+            };
+
+            return Ok(new ResponseDto<CouponDto>
+            {
+                Result = updatedCouponDto,
+                IsSuccess = true,
+                Message = "Coupon updated successfully"
+            });
         }
 
         [HttpDelete("{id:int}")]
-
-        public ResponseDto Delete(int id)
+        public ActionResult<ResponseDto<bool>> Delete(int id)
         {
-            try
-            {
-                Coupon obj = _db.Coupons.First(u => u.CouponId == id);
-                _db.Coupons.Remove(obj);
-                _db.SaveChanges();
+            var coupon = _db.Coupons.FirstOrDefault(u => u.CouponId == id);
 
-               
-            }
-            catch (Exception ex)
+            if (coupon == null)
             {
-                _response.IsSuccess = false;
-                _response.Message = ex.Message;
+                return NotFound(new ResponseDto<bool>
+                {
+                    IsSuccess = false,
+                    Message = "Coupon not found"
+                });
             }
 
-            return _response;
+            _db.Coupons.Remove(coupon);
+            _db.SaveChanges();
+
+            return Ok(new ResponseDto<bool>
+            {
+                Result = true,
+                IsSuccess = true,
+                Message = "Coupon deleted successfully"
+            });
         }
-
-
-
     }
+
 }

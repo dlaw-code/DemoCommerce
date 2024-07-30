@@ -5,12 +5,13 @@ namespace Coupon.Web.Service.IService
 {
     public interface ICouponService
     {
-        Task<ResponseDto?> GetCouponAsync(string couponCode);   
-        Task<ResponseDto?> GetAllCouponsAsync(); 
-        Task<ResponseDto?> GetCouponByIdAsync(int id);
-        Task<ResponseDto?> CreateCouponsAsync(CouponDto couponDto);
-        Task<ResponseDto?> UpdateCouponsAsync(CouponDto couponDto);
-        Task<ResponseDto?> DeleteCouponsAsync(int id);
+        Task<ResponseDto<CouponDto>?> GetCouponAsync(string couponCode);
+        Task<ResponseDto<IEnumerable<CouponDto>>?> GetAllCouponsAsync();
+        Task<ResponseDto<CouponDto>?> GetCouponByIdAsync(int id);
+        Task<ResponseDto<CouponDto>?> CreateCouponsAsync(CouponDto couponDto);
+        Task<ResponseDto<CouponDto>?> UpdateCouponsAsync(CouponDto couponDto);
+        Task<ResponseDto<bool>?> DeleteCouponsAsync(int id);
+       
 
 
     }
