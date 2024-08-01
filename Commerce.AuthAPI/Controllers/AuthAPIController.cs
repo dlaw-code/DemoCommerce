@@ -10,7 +10,7 @@ namespace Commerce.AuthAPI.Controllers
     public class AuthAPIController : ControllerBase
     {
         private readonly IAuthService _authService;
-        protected ResponseDto<string> _response;
+        protected ResponseDto _response;
         public AuthAPIController(IAuthService authService)
         {
             _authService = authService;
@@ -35,9 +35,9 @@ namespace Commerce.AuthAPI.Controllers
         public async Task<IActionResult> Login([FromBody] LoginRequestDto model)
         {
             var loginResponse = await _authService.Login(model);
-            var response = new ResponseDto<LoginResponseDto>();  // Using LoginResponseDto for this example
+            var response = new ResponseDto();
 
-            if (loginResponse.User == null)  // Adjust the condition based on your LoginResponseDto structure
+            if (loginResponse.User == null)  
             {
                 response.IsSuccess = false;
                 response.Message = "Username or password is incorrect";
@@ -45,8 +45,27 @@ namespace Commerce.AuthAPI.Controllers
                 return BadRequest(response);
             }
 
-            response.Result = loginResponse;  // Assuming loginResponse is of type LoginResponseDto
+            response.Result = loginResponse;  
             return Ok(response);
         }
+
+        [HttpPost("AssignRole")]
+        public async Task<IActionResult> AssignRole([FromBody] RegistrationRequestDto model)
+        {
+            var assignRoleSuccessful = await _authService.AssignRole(model.Email, model.Role.ToUpper());
+            var response = new ResponseDto();
+
+            if (!assignRoleSuccessful)
+            {
+                response.IsSuccess = false;
+                response.Message = "Error encountered";
+                response.Errors.Add("Invalid credentials");
+                return BadRequest(response);
+            }
+
+            // response.Result = assignRoleSuccessful;
+            return Ok(response);
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Commerce.Web.Models;
 using Coupon.Web.Models;
 using Coupon.Web.Service.IService;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http;
@@ -20,58 +21,84 @@ namespace Coupon.Web.Service
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<ResponseDto<T>> SendAsync<T>(RequestDto requestDto)
+        public async Task<ResponseDto> SendAsync(RequestDto requestDto)
         {
+
             try
             {
+
+
                 HttpClient client = _httpClientFactory.CreateClient("CommerceAPI");
-                HttpRequestMessage message = new HttpRequestMessage
+                HttpRequestMessage message = new();
+                message.Headers.Add("Accept", "application/json");
+                //token
+                message.RequestUri = new Uri(requestDto.Url);
+                if (requestDto.Data != null)
                 {
-                    Method = new HttpMethod(requestDto.ApiType.ToString()),
-                    RequestUri = new Uri(requestDto.Url),
-                    Content = requestDto.Data != null
-                        ? new StringContent(JsonConvert.SerializeObject(requestDto.Data), Encoding.UTF8, "application/json")
-                        : null
-                };
-                message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                HttpResponseMessage apiResponse = await client.SendAsync(message);
-                var content = await apiResponse.Content.ReadAsStringAsync();
-
-                ResponseDto<T> responseDto;
-
-                try
-                {
-                    responseDto = JsonConvert.DeserializeObject<ResponseDto<T>>(content);
-                }
-                catch (JsonSerializationException)
-                {
-                    // Handle unexpected response format
-                    var data = JsonConvert.DeserializeObject<T>(content);
-                    responseDto = new ResponseDto<T>
-                    {
-                        Result = data,
-                        IsSuccess = apiResponse.IsSuccessStatusCode,
-                        Message = apiResponse.IsSuccessStatusCode ? "Success" : "Error"
-                    };
+                    message.Content = new StringContent(JsonConvert.SerializeObject(requestDto.Data), Encoding.UTF8, "application/json");
                 }
 
-                return responseDto;
-            }
-            catch (Exception ex)
+                HttpResponseMessage? apiResponse = null;
+
+                switch (requestDto.ApiType)
+                {
+                    case ApiType.POST:
+                        message.Method = HttpMethod.Post;
+                        break;
+                    case ApiType.DELETE:
+                        message.Method = HttpMethod.Delete;
+                        break;
+                    case ApiType.PUT:
+                        message.Method = HttpMethod.Put;
+                        break;
+                    default:
+                        message.Method = HttpMethod.Get;
+                        break;
+
+                }
+
+                apiResponse = await client.SendAsync(message);
+
+                switch (apiResponse.StatusCode)
+                {
+                    case HttpStatusCode.NotFound:
+                        return new() { IsSuccess = false, Message = "Not Found" };
+                    case HttpStatusCode.Forbidden:
+                        return new() { IsSuccess = false, Message = "Access Denied" };
+                    case HttpStatusCode.Unauthorized:
+                        return new() { IsSuccess = false, Message = "Unauthorized" };
+                    case HttpStatusCode.InternalServerError:
+                        return new() { IsSuccess = false, Message = "Internal Server Error" };
+                    default:
+                        var apiContent = await apiResponse.Content.ReadAsStringAsync();
+                        var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
+                        return apiResponseDto;
+                }
+            }catch (Exception ex)
             {
-                return new ResponseDto<T>
+                var dto = new ResponseDto
                 {
-                    Message = ex.Message,
-                    IsSuccess = false
+                    Message = ex.Message.ToString(),
+                    IsSuccess = false,
                 };
+                return dto;
             }
+
+
+
+
+
+
         }
 
-
-
-
-    }
+        
+    }  
 }
+
+
+
+
+    
+
 
 

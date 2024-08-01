@@ -1,4 +1,4 @@
-﻿namespace Commerce.AuthAPI.Models.Dto
+﻿namespace Commerce.Web.Models
 {
     public class UserDto
     {

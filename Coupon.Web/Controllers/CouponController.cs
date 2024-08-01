@@ -17,11 +17,12 @@ namespace Commerce.Web.Controllers
         {
             List<CouponDto>? list = new();
 
-            ResponseDto<IEnumerable<CouponDto>>? response = await _couponService.GetAllCouponsAsync();
+            ResponseDto? response = await _couponService.GetAllCouponsAsync();
 
-            if (response != null && response.IsSuccess && response.Result != null)
+            if (response != null && response.IsSuccess)
             {
-                list = response.Result.ToList();
+                
+                list = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(response.Result));
             }
             else
             {
@@ -34,7 +35,7 @@ namespace Commerce.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                ResponseDto<CouponDto>? response = await _couponService.CreateCouponsAsync(model);
+                ResponseDto? response = await _couponService.CreateCouponsAsync(model);
 
                 if (response != null && response.IsSuccess)
                 {
@@ -51,7 +52,7 @@ namespace Commerce.Web.Controllers
 
         public async Task<IActionResult> CouponDelete(int couponId)
         {
-            ResponseDto<CouponDto>? response = await _couponService.GetCouponByIdAsync(couponId);
+            ResponseDto? response = await _couponService.GetCouponByIdAsync(couponId);
 
             if (response != null && response.IsSuccess)
             {
@@ -60,7 +61,7 @@ namespace Commerce.Web.Controllers
             }
             else
             {
-                TempData["error"] = response?.Message;
+              
             }
             return NotFound();
         }
@@ -68,7 +69,7 @@ namespace Commerce.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> CouponDelete(CouponDto couponDto)
         {
-            ResponseDto<bool>? response = await _couponService.DeleteCouponsAsync(couponDto.CouponId);
+            ResponseDto? response = await _couponService.DeleteCouponsAsync(couponDto.CouponId);
 
             if (response != null && response.IsSuccess)
             {
