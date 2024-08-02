@@ -9,16 +9,18 @@ using System.Linq;
 using System;
 using DemoCommerce.API.Models.ResponseDto;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DemoCommerce.API.Controllers
 {
     [Route("api/coupon")]
     [ApiController]
+    [Authorize]
     public class CouponAPIController : ControllerBase
     {
         private readonly AppDbContext _db;
 
-        public CouponAPIController(AppDbContext db, IMapper mapper)
+        public CouponAPIController(AppDbContext db)
         {
             _db = db;
         }

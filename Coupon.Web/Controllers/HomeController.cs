@@ -1,4 +1,6 @@
 using Coupon.Web.Models;
+using Coupon.Web.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -18,6 +20,7 @@ namespace Coupon.Web.Controllers
             return View();
         }
 
+        
         public IActionResult Privacy()
         {
             return View();

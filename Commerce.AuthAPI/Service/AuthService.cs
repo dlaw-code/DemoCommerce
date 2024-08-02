@@ -52,7 +52,8 @@ namespace Commerce.AuthAPI.Service
             }
 
             //If user was found, Generate JWT token
-            var token = _jwtTokenGenerator.GenerateToken(user);
+            var roles = await _userManager.GetRolesAsync(user);
+            var token = _jwtTokenGenerator.GenerateToken(user, roles);
 
             UserDto userDto = new()
             {
