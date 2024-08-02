@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoCommerce.API", "DemoCom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commerce.Web", "Coupon.Web\Commerce.Web.csproj", "{5D8F7DB3-2288-49BA-A4EF-6D13FF307F25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commerce.AuthAPI", "Commerce.AuthAPI\Commerce.AuthAPI.csproj", "{E3D3F740-A8C2-4FF3-9C59-859256A539EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commerce.AuthAPI", "Commerce.AuthAPI\Commerce.AuthAPI.csproj", "{E3D3F740-A8C2-4FF3-9C59-859256A539EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commerce.ProductAPI", "Commerce.ProductAPI\Commerce.ProductAPI.csproj", "{6810A64A-9867-41F8-BC7A-9D99583F9223}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{E3D3F740-A8C2-4FF3-9C59-859256A539EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3D3F740-A8C2-4FF3-9C59-859256A539EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3D3F740-A8C2-4FF3-9C59-859256A539EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6810A64A-9867-41F8-BC7A-9D99583F9223}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6810A64A-9867-41F8-BC7A-9D99583F9223}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6810A64A-9867-41F8-BC7A-9D99583F9223}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6810A64A-9867-41F8-BC7A-9D99583F9223}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -43,6 +49,7 @@ Global
 		{2B9E40F8-0DF1-40A3-B334-6EE0D001A688} = {99EA4C73-93E6-472B-9ACD-07A85CA021C0}
 		{5D8F7DB3-2288-49BA-A4EF-6D13FF307F25} = {71F51463-9306-4750-B955-BFFC5AB933E3}
 		{E3D3F740-A8C2-4FF3-9C59-859256A539EA} = {99EA4C73-93E6-472B-9ACD-07A85CA021C0}
+		{6810A64A-9867-41F8-BC7A-9D99583F9223} = {99EA4C73-93E6-472B-9ACD-07A85CA021C0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {56DD3569-ECBF-42E4-A207-4582BA0DE11D}

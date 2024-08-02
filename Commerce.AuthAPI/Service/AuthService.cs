@@ -65,7 +65,7 @@ namespace Commerce.AuthAPI.Service
 
             LoginResponseDto loginResponseDto = new LoginResponseDto()
             {
-                User = userDto, 
+                User = userDto,
                 Token = token
             };
 

@@ -78,6 +78,7 @@ namespace DemoCommerce.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "ADMIN")]
         public ActionResult<ResponseDto<CouponDto>> Post([FromBody] CouponDto couponDto)
         {
             var coupon = new Coupon
@@ -132,6 +133,7 @@ namespace DemoCommerce.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "ADMIN")]
         public ActionResult<ResponseDto<CouponDto>> Put([FromBody] CouponDto couponDto)
         {
             var existingCoupon = _db.Coupons.FirstOrDefault(u => u.CouponId == couponDto.CouponId);
@@ -144,7 +146,7 @@ namespace DemoCommerce.API.Controllers
                     Message = "Coupon not found"
                 });
             }
-
+             
             existingCoupon.CouponCode = couponDto.CouponCode;
             existingCoupon.DiscountAmount = couponDto.DiscountAmount;
             existingCoupon.MinAmount = couponDto.MinAmount;
@@ -169,6 +171,7 @@ namespace DemoCommerce.API.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "ADMIN")]
         public ActionResult<ResponseDto<bool>> Delete(int id)
         {
             var coupon = _db.Coupons.FirstOrDefault(u => u.CouponId == id);
