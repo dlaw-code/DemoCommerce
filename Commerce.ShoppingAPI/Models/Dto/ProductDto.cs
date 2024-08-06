@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Commerce.Web.Models
+namespace Commerce.ShoppingAPI.Models.Dto
 {
     public class ProductDto
     {
@@ -11,7 +11,5 @@ namespace Commerce.Web.Models
         public string Description { get; set; }
         public string CategoryName { get; set; }
         public string ImageUrl { get; set; }
-        [Range(1,100)]
-        public int Count { get; set; } = 1;
     }
 }

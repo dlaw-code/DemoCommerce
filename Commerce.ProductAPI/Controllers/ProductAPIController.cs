@@ -10,7 +10,7 @@ namespace Commerce.ProductAPI.Controllers
 {
     [Route("api/product")]
     [ApiController]
-    [Authorize]
+   
     public class CouponAPIController : ControllerBase
     {
         private readonly AppDbContext _db;

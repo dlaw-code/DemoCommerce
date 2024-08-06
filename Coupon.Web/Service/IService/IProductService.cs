@@ -1,5 +1,5 @@
 ﻿
-using Commerce.ProductAPI.Models.Dto;
+
 using Commerce.Web.Models;
 
 namespace Commerce.Web.Service.IService

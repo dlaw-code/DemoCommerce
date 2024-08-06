@@ -5,7 +5,7 @@ using Coupon.Web.Models;
 using Coupon.Web.Utility;
 using Coupon.Web.Service.IService;
 using Commerce.Web.Service.IService;
-using Commerce.ProductAPI.Models.Dto;
+
 
 namespace Product.Web.Service
 {
